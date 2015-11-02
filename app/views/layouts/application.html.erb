@@ -34,7 +34,11 @@
 			</ul>
 			<div class="right-nav">
 				<a href="#">Account</a>
-				<a href="cart.html">Sign In</a>
+				<% if customer_signed_in? %>
+					<%= link_to 'Sign Out', destroy_customer_session_path, method: :delete %>
+				<% else %>
+					<%= link_to 'Sign In', new_customer_session_path %>
+				<% end %>
 				<form class="navbar-form navbar-right">
 					<div class="form-group">
 						<a id="cart" href="cart.html">
@@ -54,7 +58,12 @@
 
 <div class="container">
 	<div id="main" role="main">
-
+		<% if flash[:alert] %>
+	      <div id="flash" class="alert"><%= flash[:alert] %></div>
+	    <% elsif flash[:notice] %>
+	      <div id="flash" class="notice"><%= flash[:notice] %></div>
+	    <% end %>
+		
 		<%= yield %>
 
 	</div> <!-- /#main -->
