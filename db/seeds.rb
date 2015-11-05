@@ -107,7 +107,11 @@ products.each do |product|
      puts "#{product[:attributes][:title]} already exists, skipping"
      next
   end
-  p = Product.new(product[:attributes])
+ p = Product.new(product[:attributes])
+fn = "public/img/product_images/#{product[:image]}"
+p.image = File.new(fn) if File.exist? fn
+
+
   if p.save
     puts "Created #{p.title}"
   end

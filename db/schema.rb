@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101210402) do
+ActiveRecord::Schema.define(version: 20151105003006) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -46,6 +46,20 @@ ActiveRecord::Schema.define(version: 20151101210402) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
 
+  create_table "carts", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "carts_products", force: :cascade do |t|
+    t.integer "cart_id"
+    t.integer "product_id"
+  end
+
+  add_index "carts_products", ["cart_id"], name: "index_carts_products_on_cart_id"
+  add_index "carts_products", ["product_id"], name: "index_carts_products_on_product_id"
+
   create_table "customers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -64,14 +78,34 @@ ActiveRecord::Schema.define(version: 20151101210402) do
   add_index "customers", ["email"], name: "index_customers_on_email", unique: true
   add_index "customers", ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
 
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string   "slug",                      null: false
+    t.integer  "sluggable_id",              null: false
+    t.string   "sluggable_type", limit: 50
+    t.string   "scope"
+    t.datetime "created_at"
+  end
+
+  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
+  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+
   create_table "products", force: :cascade do |t|
     t.string   "title"
     t.string   "sku"
     t.text     "description"
     t.text     "specs"
-    t.decimal  "price",       precision: 8, scale: 2
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.decimal  "price",              precision: 8, scale: 2
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.string   "slug"
   end
+
+  add_index "products", ["slug"], name: "index_products_on_slug", unique: true
 
 end

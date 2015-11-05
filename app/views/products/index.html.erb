@@ -6,7 +6,8 @@
 	<% @products.each do |product| %>
 	<div class="col-md-3 col-sm-4 col-xs-12">
 		<%= link_to product do %>
-		<img id="bill" class="" src="img/product_images/corkscrew-bill.jpg" alt="Bill Clinton Corkscrew">
+		<%= image_tag product.image.url(:medium), alt: product.title %>
+		<!-- <img id="bill" class="" src="img/product_images/corkscrew-bill.jpg" alt="Bill Clinton Corkscrew"> -->
 		<p class="product"><%= product.title %></p>
 		<% end %>
 		<p class="gray-text"><%= number_to_currency product.price %></p>
