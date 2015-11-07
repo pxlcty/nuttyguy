@@ -23,7 +23,7 @@
 			<hr class="visible-xs">
 			<p class="price"><%= number_to_currency @product.price %></p>
 			<p class="star-rating-large five ir">Star Rating</p>
-			<%= form_tag '/cart', method: :post do %>
+			<%= form_tag '/line_items', method: :post do %>
 				<%= hidden_field_tag :product_id, @product.id %>
 				<%= number_field_tag :quantity, 1, min: 1, max: 100 %>
 				<%= button_tag id: 'add-cart', class: 'btn btn-red btn-md' do %>

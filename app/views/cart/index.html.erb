@@ -17,25 +17,28 @@
 						</tr>
 					</thead>
 					<tbody>
-						<% @cart.products.each do |product| %>
+						<% @cart.	line_items.each do |line_item| %>
 						<tr>
 							<td id="thumbnail-div" class="hidden-xs">
-								<%= link_to product do %>
-								<%= image_tag product.image.url(:medium), alt: product.title, class: 'cart-thumbnail' %>
+								<%= link_to line_item.product do %>
+								<%= image_tag line_item.product.image.url(:medium), alt: line_item.product.title, class: 'cart-thumbnail' %>
 								<% end %>
 								</td>
 							<td>
-								<%= link_to product do %>
-								<p><%= product.title %></p>
+								<%= link_to line_item.product do %>
+								<p><%= line_item.product.title %></p>
 								<% end %>
-								<p class="gray-text">Item #<%= product.sku %></p>
+								<p class="gray-text">Item #<%= line_item.product.sku %></p>
 							</td>
-							<td><input type="number" name="quantity" min="1" max="100" value="1">
+							<td>
+								<%= number_field_tag :quantity, line_item.quantity, min: 1, max: 100 %>
 							<a href="#"><span class="glyphicon glyphicon-refresh"></span>update</a>
-							<a href="#"><span class="glyphicon glyphicon-remove"></span>remove</a>
+							<%= link_to line_item_path(line_item), method: :delete do %>
+							<span class="glyphicon glyphicon-remove"></span>remove
+							<% end %>
 							</td>
-							<td class="hidden-xs"><%= number_to_currency product.price %></td>
-							<td class="total-price"><%= number_to_currency product.price %></td>
+							<td class="hidden-xs"><%= number_to_currency line_item.product.price %></td>
+							<td class="total-price"><%= number_to_currency line_item.product.price %></td>
 						</tr>
 						<% end %>
 					</tbody>
