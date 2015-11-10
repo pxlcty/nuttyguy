@@ -6,5 +6,7 @@ Rails.application.routes.draw do
 	resources :cart, only: [:index]
 	resources :line_items, only: [:create, :update, :destroy]
 
+	post 'cart/complete' => 'cart#complete'
+
 	root 'products#index'
 end

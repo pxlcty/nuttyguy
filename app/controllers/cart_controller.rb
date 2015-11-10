@@ -6,4 +6,13 @@ class CartController < ApplicationController
 		@title = "Your Cart"
 	end
 
+	def complete
+		@order = Order.new(customer: current_customer)
+		@order.line_items = @cart.line_items
+		@order.save
+		@cart.delete
+		@title = "Your Order is Complete"
+		@related_products = @order.line_items.collect(&:related_product).reject(&:nil?)
+	end
+
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151107045158) do
+ActiveRecord::Schema.define(version: 20151110041833) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -85,14 +85,23 @@ ActiveRecord::Schema.define(version: 20151107045158) do
 
   create_table "line_items", force: :cascade do |t|
     t.integer  "quantity"
-    t.integer  "cart_id"
     t.integer  "product_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "itemized_id"
+    t.string   "itemized_type"
   end
 
-  add_index "line_items", ["cart_id"], name: "index_line_items_on_cart_id"
+  add_index "line_items", ["itemized_type", "itemized_id"], name: "index_line_items_on_itemized_type_and_itemized_id"
   add_index "line_items", ["product_id"], name: "index_line_items_on_product_id"
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "orders", ["customer_id"], name: "index_orders_on_customer_id"
 
   create_table "products", force: :cascade do |t|
     t.string   "title"
@@ -107,8 +116,10 @@ ActiveRecord::Schema.define(version: 20151107045158) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.string   "slug"
+    t.integer  "related_product_id"
   end
 
+  add_index "products", ["related_product_id"], name: "index_products_on_related_product_id"
   add_index "products", ["slug"], name: "index_products_on_slug", unique: true
 
 end

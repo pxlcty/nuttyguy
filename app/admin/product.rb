@@ -12,7 +12,7 @@ ActiveAdmin.register Product do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-	permit_params :title, :description, :specs, :sku, :price, :image
+	permit_params :title, :description, :specs, :sku, :price, :image, :related_product_id
 
 	show do |product|
 		attributes_table do
@@ -21,6 +21,12 @@ ActiveAdmin.register Product do
 			end
 			row :title
 			row :sku
+			row 'Customers who want to buy this product' do
+				product.carts.collect(&:email).join(", ")
+			end
+			row 'Customers who have bought this product' do
+				product.orders.collect(&:email).uniq.join(", ")
+			end
 			row :price
 			row :description
 			row :specs
@@ -32,6 +38,7 @@ ActiveAdmin.register Product do
 		f.inputs "Product Details" do
 			f.input :title
 			f.input :sku, label: "SKU", hint: "A unique SKU for this product. Very important!"
+			f.input :related_product
 			f.input :image, as: :file
 			f.input :price, as: :string
 			f.input :description

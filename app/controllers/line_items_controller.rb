@@ -6,7 +6,7 @@ class LineItemsController < ApplicationController
 		if line_item = @cart.line_items.find { |li| li.product_id == product.id }
 			line_item.quantity += params[:quantity].to_i
 		else
-			line_item = LineItem.new(cart: @cart, product: product, quantity: params[:quantity])
+			line_item = LineItem.new(itemized_id: @cart.id, itemized_type: 'Cart', product: product, quantity: params[:quantity])
 		end
 		line_item.save
 		redirect_to '/cart', notice: "#{product.title} was added to your cart." and return
